@@ -1,0 +1,17 @@
+cloudant==2.13.0
+dash
+dash-core-components
+dash-html-components
+dash-bootstrap-components
+dash-renderer
+dash-table
+plotly
+dash_table_experiments
+dash_auth
+gunicorn
+pandas==1.0.5
+nltk
+regex
+textblob
+scikit-learn==0.22.1
+tweepy

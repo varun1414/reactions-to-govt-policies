@@ -1,0 +1,11 @@
+---
+applications:
+ - name: Twitter_Sentiment_Scraping
+   random-route: true
+   memory: 256M
+   command: python tweet.py 
+ - name: Twitter_Sentiment
+   random-route: true
+   memory: 1024M
+   command: python hello.py 
+ 
