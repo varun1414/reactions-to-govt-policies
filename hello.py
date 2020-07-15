@@ -1,7 +1,7 @@
 from cloudant import Cloudant #!!COMMENTED FROM BHUSHAN'S CODE!!
 from flask import Flask, render_template, request, jsonify
 import atexit #!!COMMENTED FROM BHUSHAN'S CODE!!
-import time
+import time as tm
 import os
 import json
 import dash
@@ -58,8 +58,8 @@ elif os.path.isfile('vcap-local.json'):
         client = Cloudant.iam(user, password, url=url, connect=True)
         db = client['live']
 app = dash.Dash(__name__)
-
-
+old_time='0:0'
+old_tweet='23kcbasngjbfj'
 lemma = WordNetLemmatizer()
 
 
@@ -299,7 +299,7 @@ app.layout =  html.Div([
     dcc.Tabs(id="tabs", value='tab-1', children=[
     dcc.Tab(label='Live Tweets', value='tab-1',children=[dcc.Interval(
         id='interval-component-slow',
-        interval=1 * 6000,
+        interval=1 * 2000,
         n_intervals=0  # in milliseconds
         )]),
         dcc.Tab(label='Lockdown 1.0', value='tab-2'),
@@ -1125,7 +1125,7 @@ figoverall.update_layout( title ="Bar Chart",
 
                 )
 #----------------------------------------------------------------------------------------------
-@app.callback( Output('tabs-content', 'children'),
+@app.callback(Output('tabs-content', 'children'),
             [Input('tabs', 'value'),
               Input('date-dropdown', 'value'),
               Input('interval-component-slow', 'n_intervals')])
@@ -1135,6 +1135,8 @@ def render_content(tab,sel_option,n):
     global negative
     global neutral
     global db
+    global old_time
+    global old_tweet
     content='hi'
         # print(cal)
     #uncomment for local
@@ -1161,34 +1163,52 @@ def render_content(tab,sel_option,n):
     # negative = rc[c][0]['doc']['negative']
     # neutral = rc[c][0]['doc']['neutral']
     # neutral=0
-    tweet = result_collection[c][0]['doc']['tweet']
+
+    # tm.sleep(0.2)
     labels = result_collection[c][0]['doc']['labels']
-    print(labels)
-    if labels == 1:
-        positive+=1
-    elif labels==-1:
-        negative+=1
-    else:
-        neutral+=1
+    # print(labels)
+    # tm.sleep(0.5)
+    tweet = result_collection[c][0]['doc']['tweet']
+
+    if tweet != old_tweet:
+        if labels == 1:
+            positive+=1
+        elif labels==-1:
+            negative+=1
+        else:
+            neutral+=1
+        old_tweet = tweet
+    time = result_collection[c][0]['doc']['time']
+    # if tweet == old_tweet and time == old_time:
+    #     if labels == 1:
+    #         positive-=1
+    #     elif labels==-1:
+    #         negative-=1
+    #     else:
+    #         neutral-=1
+    # else:
+    #     old_tweet=tweet
+
     cal.loc[cal['val'] == 'positive', 'count'] = positive
     cal.loc[cal['val'] == 'negative', 'count'] = negative
     cal.loc[cal['val'] == 'neutral', 'count'] = neutral
-    time = result_collection[c][0]['doc']['time']
-    # time=9
 
+    # time=9
+    print(tweet)
     temp = {'pos': positive, 'neg': negative, 'neu': neutral, 'time': time,'text':tweet,'label':labels}
     # print(temp)
     temp = pd.DataFrame(temp, columns=['pos', 'neg', 'neu', 'time','text','label'], index=[[1]])
     # print(temp)
     tf2 = pd.concat([tf2, temp], ignore_index=True)
     tf2.drop_duplicates(subset=['text'],inplace=True)
+    print(tf2)
     print(len(tf2))
 
 
     x=list([20,30,204,309])
     y=list([90,345,234,234])
     # if time != cal['time'][0]:
-    cal['time'][:] = time
+    # cal['time'][0] = time
     figlive=px.bar(cal,x='val',y='count')
         # fig2=px.scatter(tf,x='time',y=[['pos','neg']],color=[['pos','neg']])
     figlive2=px.scatter(tf2,x='time',y=['neg','pos','neu'])

@@ -334,7 +334,7 @@ class listener(StreamListener):
         # except:
         #     print("cannot")
         #     pass
-        if count == 10:
+        if count == 50:
             return False
 
         else:
