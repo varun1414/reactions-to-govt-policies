@@ -173,9 +173,15 @@ class listener(StreamListener):
         global initime
         global tl
         global id
+        hashtags=[]
         all_data = json.loads(data)
         tweet = all_data["text"]
-
+        try:
+            for i in all_data['entities']['hashtags']:
+                hashtags.append(i['text'])
+            print("hastags ",hashtags)
+        except:
+            pass
         dt = all_data['created_at']
         dt = dt.split(" ")
         local_datetime = datetime.now()
@@ -288,6 +294,7 @@ class listener(StreamListener):
                 "positive": positive,
                 "negative": negative,
                 "neutral": neutral,
+                "hashtags":[hashtags],
                 "time":str(dt),
                 "tweet":k,
                 "labels":label

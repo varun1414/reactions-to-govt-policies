@@ -75,7 +75,7 @@ vectorizer.fit(x_train)
 print(vectorizer)
 print(len(vectorizer.get_feature_names()))
 filename = 'logR.sav'
-tf2=pd.DataFrame(columns=['pos','neg','neu','time','text','label'])
+tf2=pd.DataFrame(columns=['pos','neg','neu','time','text','label','hashtags'])
 loaded_model = joblib.load(open(filename, 'rb'))
 positive = 0
 negative = 0
@@ -1195,9 +1195,10 @@ def render_content(tab,sel_option,n):
 
     # time=9
     print(tweet)
-    temp = {'pos': positive, 'neg': negative, 'neu': neutral, 'time': time,'text':tweet,'label':labels}
+    hashtags = result_collection[c][0]['doc']['hashtags']
+    temp = {'pos': positive, 'neg': negative, 'neu': neutral, 'time': time,'text':tweet,'label':labels,'hashtags':hashtags}
     # print(temp)
-    temp = pd.DataFrame(temp, columns=['pos', 'neg', 'neu', 'time','text','label'], index=[[1]])
+    temp = pd.DataFrame(temp, columns=['pos', 'neg', 'neu', 'time','text','label','hashtags'], index=[[1]])
     # print(temp)
     tf2 = pd.concat([tf2, temp], ignore_index=True)
     tf2.drop_duplicates(subset=['text'],inplace=True)
