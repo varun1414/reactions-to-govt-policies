@@ -175,6 +175,7 @@ class listener(StreamListener):
         global id
         all_data = json.loads(data)
         tweet = all_data["text"]
+
         dt = all_data['created_at']
         dt = dt.split(" ")
         local_datetime = datetime.now()
