@@ -1,3 +1,13 @@
+Here's an attempt to analyse the trends of the public on the various decisions taken by the government during the time of covid (eg. implementation of lockdowns etc).
+
+
+
+
+
+
+
+Here's a guide to help you deploy the project on IBM cloud:
+
 # Getting Started with Python on IBM Cloud
 
 To get started, we'll take you through a sample Python Flask app, help you set up a development environment, deploy to IBM Cloud and add a Cloudant database.
