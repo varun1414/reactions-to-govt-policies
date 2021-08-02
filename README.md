@@ -1,4 +1,4 @@
-Here's an attempt to analyse the trends of the public on the various decisions taken by the government during the time of covid (eg. implementation of lockdowns etc).
+This is an attempt to analyse the trends of the public on the various decisions taken by the government during the time of covid (eg. implementation of lockdowns etc) using various NLP techniques.
 
 
 
